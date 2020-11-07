@@ -9,12 +9,12 @@ namespace BlogEngineApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("Name")]
+        [BsonElement("name")]
         public string PostName { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string BlogId { get; set; }
-        
+        public string Category { get; set; }
         public string Content { get; set; }
     }
 }
