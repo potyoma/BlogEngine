@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlogEngineApi.Models;
+using BlogEngineApi.Utilities;
 using MongoDB.Driver;
 
 namespace BlogEngineApi.Data

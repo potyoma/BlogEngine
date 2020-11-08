@@ -15,14 +15,14 @@ namespace BlogEngineApi.Data
             _posts = Database.GetCollection<Post>(settings.PostsCollectionName);
         }
         
-        public Task Create(Post post)
+        public async Task Create(Post post)
         {
-            throw new System.NotImplementedException();
+            await _posts.InsertOneAsync(post);
         }
 
-        public Task Delete(string postId)
+        public async Task Delete(string postId)
         {
-            throw new System.NotImplementedException();
+            await _posts.DeleteOneAsync(p => p.Id == postId);
         }
 
         public async Task<List<Post>> GetAllByBlogAsync(string blogId)
@@ -30,14 +30,14 @@ namespace BlogEngineApi.Data
             return await _posts.Find(p => p.BlogId == blogId).ToListAsync();
         }
 
-        public Task<Post> GetPostAsync(string postId)
+        public async Task<Post> GetPostAsync(string postId)
         {
-            throw new System.NotImplementedException();
+            return await _posts.Find(p => p.Id == postId).FirstOrDefaultAsync();
         }
 
-        public Task Update(string postId, Post postIn)
+        public async Task Update(string postId, Post postIn)
         {
-            throw new System.NotImplementedException();
+            await _posts.ReplaceOneAsync(p => p.Id == postId, postIn);
         }
     }
 }

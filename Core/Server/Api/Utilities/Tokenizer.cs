@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogEngineApi.Models
+namespace BlogEngineApi.Utilities
 {
     public static class Tokenizer
     {
