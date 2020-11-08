@@ -3,13 +3,14 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace BlogEngineApi.Utilities
 {
     public static class Tokenizer
     {
         private static readonly byte[] salt = 
-            Encoding.Unicode.GetBytes("7BANANAS");
+            Encoding.Unicode.GetBytes(Startup.StaticConfig.GetSection("Salt").ToString());
         
         private static readonly int iterations = 2000;
 
