@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -10,6 +11,7 @@ namespace BlogEngineApi.Models
         public string Id { get; set; }
 
         [BsonElement("name")]
+        [JsonProperty("name")]
         public string BlogName { get; set; }
         [BsonElement("blogId")]
         public string BlogId { get; set; }

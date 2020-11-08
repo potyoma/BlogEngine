@@ -1,9 +1,8 @@
-using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace BlogEngineApi.Utilities
 {
@@ -11,10 +10,20 @@ namespace BlogEngineApi.Utilities
     {
         private static readonly byte[] salt = 
             Encoding.Unicode.GetBytes(Startup.StaticConfig.GetSection("Salt").ToString());
-        
-        private static readonly int iterations = 2000;
+        private const int iterations = 2000;
 
         public static async Task<string> Create(string id, string email)
+        {
+            // Get secure array bytes.
+            byte[] secureArray = await Encrypt(id, email);
+
+            // Convert in an URL safe string.
+            string urlToken = WebEncoders.Base64UrlEncode(secureArray);
+
+            return urlToken;
+        }
+
+        private static async Task<byte[]> Encrypt(string id, string email)
         {
             byte[] encryptedBytes;
             byte[] plainBytes = Encoding.Unicode.GetBytes(id);
@@ -35,7 +44,7 @@ namespace BlogEngineApi.Utilities
                 encryptedBytes = ms.ToArray();
             }
 
-            return Convert.ToBase64String(encryptedBytes);
+            return encryptedBytes;
         }
     }
 }

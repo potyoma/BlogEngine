@@ -45,6 +45,8 @@ namespace BlogEngineApi.Data
 
         public async Task UpdateAsync(string token, Blog blogin)
         {
+            var blog = await _blogs.Find(b => b.Token == token).FirstOrDefaultAsync();
+            blogin.Id = blog.Id;
             blogin.Token = token;
             await _blogs.ReplaceOneAsync(b => b.Token == token, blogin);
         }

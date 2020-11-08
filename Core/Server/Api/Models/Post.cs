@@ -1,5 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace BlogEngineApi.Models
 {
@@ -10,10 +11,11 @@ namespace BlogEngineApi.Models
         public string Id { get; set; }
 
         [BsonElement("name")]
+        [JsonProperty("name")]
         public string PostName { get; set; }
-
-        [BsonElement("blogId")]
-        public string BlogId { get; set; }
+        [BsonElement("blog")]
+        [JsonProperty("blog")]
+        public string Blog { get; set; }
         [BsonElement("category")]
         public string Category { get; set; }
         [BsonElement("content")]

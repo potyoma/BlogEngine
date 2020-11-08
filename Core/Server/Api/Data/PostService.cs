@@ -27,7 +27,7 @@ namespace BlogEngineApi.Data
 
         public async Task<List<Post>> GetAllByBlogAsync(string blogId)
         {
-            return await _posts.Find(p => p.BlogId == blogId).ToListAsync();
+            return await _posts.Find(p => p.Blog == blogId).ToListAsync();
         }
 
         public async Task<Post> GetPostAsync(string postId)
@@ -37,6 +37,7 @@ namespace BlogEngineApi.Data
 
         public async Task Update(string postId, Post postIn)
         {
+            postIn.Id = postId;
             await _posts.ReplaceOneAsync(p => p.Id == postId, postIn);
         }
     }

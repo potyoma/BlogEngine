@@ -20,10 +20,10 @@ namespace BlogEngineApi.Controllers
             _blogs = blogs;
         }
 
-        [HttpGet("{blogId}")]
-        public async Task<ActionResult<List<Post>>> GetByBlogAsync(string blogId)
+        [HttpGet("{blog}")]
+        public async Task<ActionResult<List<Post>>> GetByBlogAsync(string blog)
         {
-            return await _data.GetAllByBlogAsync(blogId);
+            return await _data.GetAllByBlogAsync(blog);
         }
 
         [HttpGet("get/{postId}")]
@@ -41,7 +41,7 @@ namespace BlogEngineApi.Controllers
                 return NotFound();
             }
 
-            var auth = await Authorize(token, post.BlogId);
+            var auth = await Authorize(token, post.Blog);
             if (!auth)
             {
                 return BadRequest();
@@ -63,7 +63,7 @@ namespace BlogEngineApi.Controllers
                 return NotFound();
             }
 
-            var auth = await Authorize(token, post.BlogId);
+            var auth = await Authorize(token, post.Blog);
             if (!auth)
             {
                 return BadRequest();
@@ -75,10 +75,10 @@ namespace BlogEngineApi.Controllers
 
         [HttpPost("{token}")]
         public async Task<IActionResult> CreatePost(
-            [FromQuery]string token, [FromBody]Post post)
+            string token, [FromBody]Post post)
         {   
             // Contains authorization condition.
-            var auth = await Authorize(token, post.BlogId);
+            var auth = await Authorize(token, post.Blog);
 
             if (!auth)
             {

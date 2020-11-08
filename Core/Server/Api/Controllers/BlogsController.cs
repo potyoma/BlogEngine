@@ -34,9 +34,11 @@ namespace BlogEngineApi.Controllers
         }
 
         [HttpPut("{token}")]
-        public async Task<IActionResult> Update(string token, Blog blogin)
+        public async Task<IActionResult> Update(
+            string token, 
+            [FromBody]Blog blogin)
         {
-            var blog = await _data.GetBlogAsync(token);
+            var blog = await _data.Get(token);
 
             if (blog == null)
             {
