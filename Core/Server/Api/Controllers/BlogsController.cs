@@ -16,9 +16,51 @@ namespace BlogEngineApi.Controllers
         {
             _data = data;
         }
-
+    
         [HttpGet]
         public async Task<ActionResult<List<Blog>>> Get() =>
             await _data.GetAsync();
+
+        [HttpGet("{id:length(24)}", Name = "GetBlog")]
+        public async Task<Blog> Get(string id) =>
+            await _data.GetBlogAsync(id);
+
+        [HttpPost]
+        public async Task<ActionResult<Blog>> Create(Blog blog)
+        {
+            var created = await _data.CreateAsync(blog);
+
+            return created;
+        }
+
+        [HttpPut("{token}")]
+        public async Task<IActionResult> Update(string token, Blog blogin)
+        {
+            var blog = await _data.GetBlogAsync(token);
+
+            if (blog == null)
+            {
+                return NotFound();
+            }
+
+            await _data.UpdateAsync(token, blogin);
+
+            return NoContent();
+        }   
+
+        [HttpDelete("{token}")]
+        public async Task<IActionResult> Delete(string token)
+        {
+            var blog = await _data.Get(token);
+
+            if (blog == null)
+            {
+                return NotFound();
+            }
+
+            await _data.RemoveAsync(blog.Token);
+
+            return NoContent();
+        }
     }
 }

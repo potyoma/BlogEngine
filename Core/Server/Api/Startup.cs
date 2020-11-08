@@ -21,13 +21,14 @@ namespace BlogEngineApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<BlogDatabaseSettings>(
-                Configuration.GetSection(nameof(BlogDatabaseSettings)));
+            services.Configure<DatabaseSettings>(
+                Configuration.GetSection(nameof(DatabaseSettings)));
 
             services.AddSingleton<IDatabaseSettings>(sp => 
-                sp.GetRequiredService<IOptions<BlogDatabaseSettings>>().Value);
+                sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
             services.AddSingleton<BlogService>();
+            services.AddSingleton<PostService>();
 
             services.AddControllers();
         }
