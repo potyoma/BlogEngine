@@ -10,6 +10,6 @@ namespace BlogEngineApi.Data
         Task<Post> GetPostAsync(string postId);
         Task Delete(string postId);
         Task Update(string postId, Post postIn);
-        Task Create(Post post);
+        Task<Post> Create(Post post);
     }
 }

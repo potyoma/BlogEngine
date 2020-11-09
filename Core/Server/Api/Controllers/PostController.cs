@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BlogEngineApi.Data;
 using BlogEngineApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BlogEngineApi.Controllers
 {
@@ -73,7 +74,7 @@ namespace BlogEngineApi.Controllers
         }
 
         [HttpPost("{token}")]
-        public async Task<IActionResult> CreatePost(
+        public async Task<ActionResult<Post>> CreatePost(
             string token, [FromBody]Post post)
         {   
             // Contains authorization condition.
@@ -84,8 +85,8 @@ namespace BlogEngineApi.Controllers
                 return BadRequest();
             }
 
-            await _data.Create(post);
-            return NoContent();
+            var posted = await _data.Create(post);
+            return posted;
         }
 
         private async Task<bool> Authorize(string token, string blogUrl)

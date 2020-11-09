@@ -15,9 +15,10 @@ namespace BlogEngineApi.Data
             _posts = Database.GetCollection<Post>(settings.PostsCollectionName);
         }
         
-        public async Task Create(Post post)
+        public async Task<Post> Create(Post post)
         {
             await _posts.InsertOneAsync(post);
+            return post;
         }
 
         public async Task Delete(string postId)
