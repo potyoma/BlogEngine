@@ -13,7 +13,8 @@ namespace BlogEngineApi.Models
         [BsonElement("name")]
         [JsonProperty("name")]
         public string BlogName { get; set; }
-        [BsonElement("blogId")]
+        [BsonElement("blogUrl")]
+        [JsonProperty("blogUrl")]
         public string BlogId { get; set; }
         [BsonElement("email")]
         public string Email { get; set; }

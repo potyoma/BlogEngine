@@ -13,9 +13,9 @@ namespace BlogEngineApi.Models
         [BsonElement("name")]
         [JsonProperty("name")]
         public string PostName { get; set; }
-        [BsonElement("blog")]
-        [JsonProperty("blog")]
-        public string Blog { get; set; }
+        [BsonElement("blogUrl")]
+        [JsonProperty("blogUrl")]
+        public string BlogId { get; set; }
         [BsonElement("category")]
         public string Category { get; set; }
         [BsonElement("content")]

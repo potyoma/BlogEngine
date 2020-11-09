@@ -27,7 +27,7 @@ namespace BlogEngineApi.Data
 
         public async Task<List<Post>> GetAllByBlogAsync(string blogId)
         {
-            return await _posts.Find(p => p.Blog == blogId).ToListAsync();
+            return await _posts.Find(p => p.BlogId == blogId).ToListAsync();
         }
 
         public async Task<Post> GetPostAsync(string postId)
