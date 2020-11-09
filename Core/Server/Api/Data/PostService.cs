@@ -25,9 +25,9 @@ namespace BlogEngineApi.Data
             await _posts.DeleteOneAsync(p => p.Id == postId);
         }
 
-        public async Task<List<Post>> GetAllByBlogAsync(string blogId)
+        public async Task<List<Post>> GetAllByBlogAsync(string blogUrl)
         {
-            return await _posts.Find(p => p.BlogId == blogId).ToListAsync();
+            return await _posts.Find(p => p.BlogUrl == blogUrl).ToListAsync();
         }
 
         public async Task<Post> GetPostAsync(string postId)

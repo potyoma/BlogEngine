@@ -41,7 +41,7 @@ namespace BlogEngineApi.Controllers
                 return NotFound();
             }
 
-            var auth = await Authorize(token, post.BlogId);
+            var auth = await Authorize(token, post.BlogUrl);
             if (!auth)
             {
                 return BadRequest();
@@ -63,7 +63,7 @@ namespace BlogEngineApi.Controllers
                 return NotFound();
             }
 
-            var auth = await Authorize(token, post.BlogId);
+            var auth = await Authorize(token, post.BlogUrl);
             if (!auth)
             {
                 return BadRequest();
@@ -78,7 +78,7 @@ namespace BlogEngineApi.Controllers
             string token, [FromBody]Post post)
         {   
             // Contains authorization condition.
-            var auth = await Authorize(token, post.BlogId);
+            var auth = await Authorize(token, post.BlogUrl);
 
             if (!auth)
             {
@@ -89,11 +89,16 @@ namespace BlogEngineApi.Controllers
             return NoContent();
         }
 
-        private async Task<bool> Authorize(string token, string blogId)
+        private async Task<bool> Authorize(string token, string blogUrl)
         {
-            var blog = await _blogs.GetBlogAsync(blogId);
+            var blog = await _blogs.Get(token);
+
+            if (blog == null)
+            {
+                return false;
+            }
             
-            return blog.Token == token;
+            return blog.BlogUrl == blogUrl;
         }
     }
 }

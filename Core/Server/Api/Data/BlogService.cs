@@ -18,7 +18,7 @@ namespace BlogEngineApi.Data
 
         public async Task<Blog> CreateAsync(Blog blog)
         {
-            blog.Token = Tokenizer.Create(blog.BlogId, blog.Email).Result;
+            blog.Token = Tokenizer.Create(blog.BlogUrl, blog.Email).Result;
             await _blogs.InsertOneAsync(blog);
             return blog;
         }
