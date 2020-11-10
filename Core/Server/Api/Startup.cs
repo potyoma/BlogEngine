@@ -46,7 +46,11 @@ namespace BlogEngineApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors();
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseHttpsRedirection();
 
