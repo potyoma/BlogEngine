@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlogEngineApi.Models;
 using BlogEngineApi.Utilities;
+using System.Linq;
 using MongoDB.Driver;
 
 namespace BlogEngineApi.Data
@@ -25,7 +26,20 @@ namespace BlogEngineApi.Data
 
         public async Task<List<Blog>> GetAsync()
         {
-            return await _blogs.Find(b => true).ToListAsync();
+            var blogs = await _blogs
+                .Find(b => true)
+                .ToListAsync();
+
+            return blogs
+                .Select(b => new Blog
+                {
+                    Id = b.Id,
+                    BlogName = b.BlogName,
+                    BlogUrl = b.BlogUrl,
+                    Author = b.Author,
+                    Category = b.Category
+                })
+                .ToList();
         }
 
         public async Task<Blog> Get(string token)
@@ -35,7 +49,14 @@ namespace BlogEngineApi.Data
 
         public async Task<Blog> GetBlogAsync(string id)
         {
-            return await _blogs.Find(b => b.Id == id).FirstOrDefaultAsync();
+            var blog = await _blogs
+                .Find(b => b.Id == id)
+                .FirstOrDefaultAsync();
+            
+            blog.Token = null;
+            blog.Email = null;
+
+            return blog;
         }
 
         public async Task RemoveAsync(string token)
