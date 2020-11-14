@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { Component } from "react";
+import $ from "jquery";
 
-import BlogCard from "./components/blogCard"
+import BlogCard from "./components/blogCard";
 
-function Main(props) {
+class Main extends Component {
+  state = {
+    blogs: [],
+    url: "https://blog-engine-api.herokuapp.com/api/blogs",
+  };
+
+  componentDidMount() {
+    $.get(this.state.url, (data) => {
+      this.setState({ blogs: data });
+    });
+  }
+
+  render() {
     return (
-        <div>
-            {props.forEach(element => 
-                <BlogCard blog={element} />)}
-        </div>
-    )
+      <div className="container">
+        {this.state.blogs.forEach((element) => {
+          console.log(element);
+          <BlogCard blog={element} />;
+        })}
+      </div>
+    );
+  }
 }
 
-export default Main
+export default Main;
