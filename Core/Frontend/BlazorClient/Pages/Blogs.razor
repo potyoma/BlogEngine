@@ -1,0 +1,17 @@
+@inject HttpClient Http
+
+<div class="container">
+    @* @foreach (var blog in blogs)
+    {
+
+    } *@
+</div>
+
+@code {
+    private Blog[] blogs;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        blogs = Http
+    }
+}
