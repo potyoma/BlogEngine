@@ -1,17 +1,48 @@
-@inject HttpClient Http
+@inject HttpClient Http;
 
 <div class="container">
-    @* @foreach (var blog in blogs)
+    @foreach (var blog in blogs)
     {
-
-    } *@
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">@blog.Name</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@blog.Author</h6>
+                <p class="card-text">@blog.Category</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+    }
 </div>
 
 @code {
-    private Blog[] blogs;
-    
+    private List<Blog> blogs = new List<Blog>();
+
     protected override async Task OnInitializedAsync()
     {
-        blogs = Http
+        blogs = await Http.GetFromJsonAsync<List<Blog>>("https://blog-engine-api.herokuapp.com/api/blogs");
+
+        if (blogs == null)
+        {
+            Console.WriteLine("There are no blogs. Sorry.");
+            return;
+        }
+        
+        Console.WriteLine(blogs[0].Name);
+
+        blogs = blogs
+            .OrderBy(b => b.Name)
+            .ToList();
+    }
+
+    public class Blog
+    {
+        public string Id { get; set; }
+        public string Author { get; set; }
+        public string Category { get; set; }
+        public string Name { get; set; }
+        public string BlogUrl { get; set; }
+        public string Token { get; set; }
+        public string Email { get; set; }
     }
 }
