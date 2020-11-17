@@ -1,0 +1,29 @@
+@page "/login";
+@inject HttpClient Http;
+@using BlazorClient.Models;
+
+<EditForm Model="blog">
+    <div class="form-group">
+        <label for="inputEmail">Email</label>
+        <input type="email" @bind="blog.Email" class="form-control" id="inputEmail" placeholder="Type your email here">
+    </div>
+    <div class="form-group">
+        <label for="inputToken">Token</label>
+        <input type="text" @bind="blog.Token" class="form-control" id="inputToken" placeholder="Input your token here">
+    </div>
+    <button class="btn btn-primary" @onclick="UserLogin">Submit</button>
+</EditForm>
+
+@code {
+    private Blog blog;
+
+    protected override void OnInitialized()
+    {
+        blog = new Blog();
+    }
+
+    private void UserLogin()
+    {
+
+    }
+}
