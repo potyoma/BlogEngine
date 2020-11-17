@@ -7,5 +7,7 @@ namespace BlazorClient.Models
         public string Category { get; set; }
         public string Name { get; set; }
         public string BlogUrl { get; set; }
+        public string Token { get; set; }
+        public string Email { get; set; }
     }
 }

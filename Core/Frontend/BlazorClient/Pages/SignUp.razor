@@ -1,0 +1,53 @@
+@page "/signup";
+@inject HttpClient Http;
+@using BlazorClient.Models;
+
+<EditForm Model="@blog">
+    <div class="form-group">
+        <label for="inputEmail">Email address</label>
+        <input type="email" @bind="blog.Email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
+            placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="inputName">Blog's Name</label>
+        <input type="text" @bind="blog.Name" class="form-control" id="inputName" placeholder="Enter Name">
+    </div>
+    <div class="form-group">
+        <label for="inputUrl">URL ID</label>
+        <input type="text" @bind="blog.BlogUrl" class="form-control" id="inputUrl" placeholder="Enter ID">
+    </div>
+    <div class="form-group">
+        <label for="inputAuthor">Your Name</label>
+        <input type="text" @bind="blog.Author" class="form-control" id="inputAuthor" placeholder="Enter Category">
+    </div>
+    <div class="form-group">
+        <label for="inputCategory">Category Name</label>
+        <input type="text" @bind="blog.Category" class="form-control" id="inputCategory" placeholder="Enter Category">
+    </div>
+    <button class="btn btn-primary" @onclick="AddBlog">Submit</button>
+</EditForm>
+
+@code {
+    public Blog blog;
+
+    protected override void OnInitialized()
+    {
+        blog = new Blog();
+    }
+
+    private async Task AddBlog()
+    {
+        if (blog == null)
+        {
+            Console.WriteLine("Blog is empty");
+            return;
+        }
+        var response = await Http
+         .PostAsJsonAsync<Blog>("https://blog-engine-api.herokuapp.com/api/blogs", blog);
+
+        var created = await response.Content.ReadFromJsonAsync<Blog>();
+
+        Console.WriteLine(created.Token);
+    }
+}
