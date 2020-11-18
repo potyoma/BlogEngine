@@ -1,5 +1,6 @@
 @inject HttpClient Http;
 @using BlazorClient.Models;
+@inject NavigationManager NavigationManager;
 
 @foreach (var blog in blogs)
 {
@@ -9,13 +10,14 @@
                 <h5 class="card-title">@blog.Name</h5>
                 <h6 class="card-subtitle mb-2 text-muted">@blog.Author</h6>
                 <p class="card-text">@blog.Category</p>
-                <a href="" class="nav-link">Read</a>
+                <a class="nav-link" href="/blog/@blog.Id">Read</a>
             </div>
         </div>
     </div>
 }
 
-@code {
+@code
+{
     private List<Blog> blogs = new List<Blog>();
 
     protected override async Task OnInitializedAsync()
