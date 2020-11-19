@@ -1,5 +1,6 @@
 @page "/signup";
 @inject HttpClient Http;
+@inject IJSRuntime Js;
 @using BlazorClient.Models;
 
 <EditForm Model="@blog">
@@ -49,6 +50,7 @@
 
         var created = await response.Content.ReadFromJsonAsync<Blog>();
 
-        Console.WriteLine(created.Token);
+        var success = await Js.InvokeAsync<JsonContent>("alert", 
+            $"Registration was successfull! Here's your token: \n{created.Token}\nSave it and keep. It grants you access to your blog.");
     }
 }
