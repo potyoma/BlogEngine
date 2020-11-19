@@ -15,14 +15,17 @@ class Main extends Component {
     });
   }
 
+  renderBlogs = (blogs) => {
+    console.log("It's fucked");
+    return blogs.forEach((element) => {
+      console.log("Is it working?");
+      return <BlogCard blog={element} />;
+    });
+  };
+
   render() {
     return (
-      <div className="container">
-        {this.state.blogs.forEach((element) => {
-          console.log(element);
-          <BlogCard blog={element} />;
-        })}
-      </div>
+      <div className="container">{this.renderBlogs(this.state.blogs)}</div>
     );
   }
 }
