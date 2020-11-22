@@ -1,5 +1,6 @@
 @page "/login";
 @inject HttpClient Http;
+@inject IJSRuntime Js;
 @using BlazorClient.Models;
 
 <EditForm Model="blog">
@@ -23,8 +24,18 @@
         blog = new Blog();
     }
 
-    private void UserLogin()
+    private async Task UserLogin()
     {
-        var loggedIn = Http.GetFromJsonAsync<Blog>()
+        var loggedIn = await Http.GetAsync($"https://blog-engine-api.herokuapp.com/auth/{blog.Token}/{blog.BlogUrl}");
+        var success = loggedIn.StatusCode == System.Net.HttpStatusCode.OK;
+
+        if (!success)
+        {
+            var error = await Js.InvokeAsync<JsonContent>("alert", 
+                $"Sorry, your token or url is invalid. Please, try again.");
+            return;
+        }
+
+        
     }
 }
