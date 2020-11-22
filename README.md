@@ -3,3 +3,6 @@ This is a school coursework.The project includes ASP.NET Core back-end and React
 
 # API
 You can find API documentation in APIDOCS.md. Webapi is available [here](https://blog-engine-api.herokuapp.com).
+
+# Web app (Blazor)
+You can find working web app [here](https://blazor-blog-client.vercel.app/).
