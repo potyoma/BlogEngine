@@ -4,8 +4,8 @@
 
 <EditForm Model="blog">
     <div class="form-group">
-        <label for="inputEmail">Email</label>
-        <input type="email" @bind="blog.Email" class="form-control" id="inputEmail" placeholder="Type your email here">
+        <label for="inputBlogUrl">Blog Url</label>
+        <input type="text" @bind="blog.BlogUrl" class="form-control" id="inputBlogUrl" placeholder="Type your blog's Url here">
     </div>
     <div class="form-group">
         <label for="inputToken">Token</label>
@@ -25,6 +25,6 @@
 
     private void UserLogin()
     {
-        
+        var loggedIn = Http.GetFromJsonAsync<Blog>()
     }
 }

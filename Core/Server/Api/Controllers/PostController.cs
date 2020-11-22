@@ -20,7 +20,7 @@ namespace BlogEngineApi.Controllers
             _blogs = blogs;
         }
 
-        [HttpGet("{blog}")]
+        [HttpGet("{blogId}")]
         public async Task<ActionResult<List<Post>>> GetByBlogAsync(string blogId)
         {
             return await _data.GetAllByBlogAsync(blogId);

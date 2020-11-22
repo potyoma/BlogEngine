@@ -1,0 +1,47 @@
+@page "/authorized/blog/{blogId}";
+@inject HttpClient Http;
+@using BlazorClient.Models;
+
+<div>
+    @if (posts.Count() < 1)
+    {
+        <h2>Sorry, the blog has no posts yet...</h2>
+    }
+    else
+    {
+        foreach (var post in posts)
+        {
+            <div class="container">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@post.PostName</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@post.BlogUrl</h6>
+                        <p class="card-text">@post.Category</p>
+                        <a href="post/@post.Id" class="nav-link">Read</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code
+{
+    [Parameter]
+    public string BlogId { get; set; }
+
+    private List<Post> posts = new List<Post>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await Http.GetFromJsonAsync<List<Post>>("https://blog-engine-api.herokuapp.com/api/post/" + BlogId);
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrEmpty(BlogId))
+        {
+            Console.WriteLine("Could you please provide an ID?");
+        }
+    }
+}

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BlogEngineApi.Data;
 using BlogEngineApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using BlogEngineApi.Utilities;
 
 namespace BlogEngineApi.Controllers
 {
@@ -20,6 +21,19 @@ namespace BlogEngineApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Blog>>> Get() =>
             await _data.GetAsync();
+
+        [HttpGet("auth/{token}/{blogUrl}")]
+        public async Task<ActionResult> Authorize(string token, string blogUrl)
+        {
+            var auth = await Authorizer.Authorize(token, blogUrl, _data);
+
+            if (auth)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
 
         [HttpGet("{id:length(24)}", Name = "GetBlog")]
         public async Task<Blog> Get(string id) =>
