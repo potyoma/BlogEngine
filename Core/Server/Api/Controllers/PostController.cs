@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using BlogEngineApi.Data;
 using BlogEngineApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
+using BlogEngineApi.Utilities;
 
 namespace BlogEngineApi.Controllers
 {
@@ -41,7 +41,7 @@ namespace BlogEngineApi.Controllers
                 return NotFound();
             }
 
-            var auth = await Authorize(token, post.BlogUrl);
+            var auth = await Authorizer.Authorize(token, post.BlogUrl, _blogs);
             if (!auth)
             {
                 return BadRequest();
@@ -63,7 +63,7 @@ namespace BlogEngineApi.Controllers
                 return NotFound();
             }
 
-            var auth = await Authorize(token, post.BlogUrl);
+            var auth = await Authorizer.Authorize(token, post.BlogUrl, _blogs);
             if (!auth)
             {
                 return BadRequest();
@@ -78,7 +78,7 @@ namespace BlogEngineApi.Controllers
             string token, [FromBody]Post post)
         {   
             // Contains authorization condition.
-            var auth = await Authorize(token, post.BlogUrl);
+            var auth = await Authorizer.Authorize(token, post.BlogUrl, _blogs);
 
             if (!auth)
             {
@@ -87,18 +87,6 @@ namespace BlogEngineApi.Controllers
 
             var posted = await _data.Create(post);
             return posted;
-        }
-
-        private async Task<bool> Authorize(string token, string blogUrl)
-        {
-            var blog = await _blogs.Get(token);
-
-            if (blog == null)
-            {
-                return false;
-            }
-            
-            return blog.BlogUrl == blogUrl;
         }
     }
 }
