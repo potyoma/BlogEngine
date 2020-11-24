@@ -1,8 +1,10 @@
-@page "/authorized/blog/{blogId}";
+@page "/admin/blog/{blogId}/{token}";
 @inject HttpClient Http;
+@inject NavigationManager NavigationManager;
 @using BlazorClient.Models;
 
 <div>
+    <button type="button" class="btn btn-primary" @onclick="AddPost">Add post</button>
     @if (posts.Count() < 1)
     {
         <h2>Sorry, the blog has no posts yet...</h2>
@@ -17,7 +19,7 @@
                         <h5 class="card-title">@post.PostName</h5>
                         <h6 class="card-subtitle mb-2 text-muted">@post.BlogUrl</h6>
                         <p class="card-text">@post.Category</p>
-                        <a href="post/@post.Id" class="nav-link">Read</a>
+                        <a class="nav-link" @onclick="@EditPost(post.Id)">Edit</a>
                     </div>
                 </div>
             </div>
@@ -29,19 +31,34 @@
 {
     [Parameter]
     public string BlogId { get; set; }
+    [Parameter]
+    public string Token { get; set; }
 
+    public Blog blog;    
     private List<Post> posts = new List<Post>();
 
     protected override async Task OnInitializedAsync()
     {
-        posts = await Http.GetFromJsonAsync<List<Post>>("https://blog-engine-api.herokuapp.com/api/post/" + BlogId);
+        posts = await Http.GetFromJsonAsync<List<Post>>($"https://blog-engine-api.herokuapp.com/api/post/{BlogId}");
     }
 
     protected override void OnParametersSet()
     {
-        if (string.IsNullOrEmpty(BlogId))
+        if (string.IsNullOrEmpty(BlogId) || string.IsNullOrEmpty(Token))
         {
-            Console.WriteLine("Could you please provide an ID?");
+            Console.WriteLine("Could you please provide both objects?");
         }
+    }
+
+    private void AddPost()
+    {
+        var route = $"/admin/add-post/{Token}";
+        NavigationManager.NavigateTo(route);
+    }
+
+    private void EditPost(string postId)
+    {
+        var route = $"/admin/edit-post/{postIs}/{Token}";
+        NavigationManager.NavigateTo(route);
     }
 }
