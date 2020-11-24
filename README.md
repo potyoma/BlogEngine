@@ -6,3 +6,4 @@ You can find API documentation in APIDOCS.md. Webapi is available [here](https:/
 
 # Web app (Blazor)
 You can find working web app [here](https://blazor-blog-client.vercel.app/).
+There is a problem with routing. You can't navigate via URL to any page except main. Sorry, I'm working on it.
