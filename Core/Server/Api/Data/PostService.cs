@@ -8,11 +8,13 @@ namespace BlogEngineApi.Data
     public class PostService : Service, IPostService
     {
         private readonly IMongoCollection<Post> _posts;
+        private readonly IMongoCollection<Blog> _blogs;
 
         public PostService(IDatabaseSettings settings)
             : base(settings)
         {
             _posts = Database.GetCollection<Post>(settings.PostsCollectionName);
+            _blogs = Database.GetCollection<Blog>(settings.BlogsCollectionName);
         }
         
         public async Task<Post> Create(Post post)
@@ -26,8 +28,10 @@ namespace BlogEngineApi.Data
             await _posts.DeleteOneAsync(p => p.Id == postId);
         }
 
-        public async Task<List<Post>> GetAllByBlogAsync(string blogUrl)
+        public async Task<List<Post>> GetAllByBlogAsync(string id)
         {
+            var blog = await _blogs.Find(b => b.Id == id).FirstOrDefaultAsync();
+            var blogUrl = blog.BlogUrl;
             return await _posts.Find(p => p.BlogUrl == blogUrl).ToListAsync();
         }
 

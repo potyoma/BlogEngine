@@ -4,7 +4,7 @@
 @inject NavigationManager NavigationManager;
 @using BlazorClient.Models;
 
-<EditForm Model="blog">
+<EditForm Model="@blog">
     <div class="form-group">
         <label for="inputBlogUrl">Blog Url</label>
         <input type="text" @bind="blog.BlogUrl" class="form-control" id="inputBlogUrl"

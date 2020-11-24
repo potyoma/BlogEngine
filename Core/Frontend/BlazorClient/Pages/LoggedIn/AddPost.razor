@@ -1,0 +1,69 @@
+@page "/admin/add-post/{blogUrl}/{token}";
+@inject HttpClient Http;
+@inject IJSRuntime Js;
+@using BlazorClient.Models;
+
+<EditForm Model="@post">
+    <div class="form-group">
+        <label for="inputName">Post's Name</label>
+        <input type="text" @bind="post.PostName" class="form-control" id="inputName" placeholder="Enter Name">
+    </div>
+    <div class="form-group">
+        <label for="category">Insert category</label>
+        <input type="text" @bind="post.Category" class="form-control" id="category" aria-describedby="emailHelp"
+            placeholder="Insert category">
+    </div>
+    <div class="form-group">
+        <label for="inputUrl">Write the content of your post in HTML</label>
+        <textarea style="height:250px" @bind="post.Content" class="form-control" id="inputUrl" placeholder="Content"></textarea>
+    </div>
+    <button class="btn btn-primary" @onclick="SubmitPost">Submit</button>
+</EditForm>
+
+@code
+{
+    [Parameter]
+    public string Token { get; set; }
+    [Parameter]
+    public string BlogUrl { get; set; }
+
+    private Post post;
+
+    protected override void OnInitialized()
+    {
+        post = new Post()
+        {
+            BlogUrl = BlogUrl
+        };
+    }
+
+    private async Task SubmitPost()
+    {
+        if (!PostIsFull(post))
+        {
+            var error = await Js.InvokeAsync<JsonContent>("alert",
+                $"All fields required. Please, write them out and try again.");
+            return;
+        }
+
+        var url = $"https://blog-engine-api.herokuapp.com/api/post/{Token}";
+        var posted = await Http.PostAsJsonAsync<Post>(url, post);
+        
+        if (posted == null)
+        {
+            var error = await Js.InvokeAsync<JsonContent>("alert",
+                $"Something went wrong. Please, try again.");
+            return;
+        }
+
+        var success = await Js.InvokeAsync<JsonContent>("alert",
+                $"Everything's fine!");
+    }
+
+    public bool PostIsFull(Post post)
+    {
+        return !(post == null || string.IsNullOrEmpty(post.PostName) 
+            || string.IsNullOrEmpty(post.Content)
+            || string.IsNullOrEmpty(post.Category));
+    }
+}

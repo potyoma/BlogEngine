@@ -19,7 +19,7 @@
                         <h5 class="card-title">@post.PostName</h5>
                         <h6 class="card-subtitle mb-2 text-muted">@post.BlogUrl</h6>
                         <p class="card-text">@post.Category</p>
-                        <a class="nav-link" @onclick="@EditPost(post.Id)">Edit</a>
+                        <a class="nav-link" @onclick="@(e => EditPost(post.Id))">Edit</a>
                     </div>
                 </div>
             </div>
@@ -40,6 +40,7 @@
     protected override async Task OnInitializedAsync()
     {
         posts = await Http.GetFromJsonAsync<List<Post>>($"https://blog-engine-api.herokuapp.com/api/post/{BlogId}");
+        blog = await Http.GetFromJsonAsync<Blog>($"https://blog-engine-api.herokuapp.com/api/blogs/{BlogId}");
     }
 
     protected override void OnParametersSet()
@@ -52,13 +53,13 @@
 
     private void AddPost()
     {
-        var route = $"/admin/add-post/{Token}";
+        var route = $"/admin/add-post/{blog.BlogUrl}/{Token}";
         NavigationManager.NavigateTo(route);
     }
 
     private void EditPost(string postId)
     {
-        var route = $"/admin/edit-post/{postIs}/{Token}";
+        var route = $"/admin/edit-post/{postId}/{Token}";
         NavigationManager.NavigateTo(route);
     }
 }
