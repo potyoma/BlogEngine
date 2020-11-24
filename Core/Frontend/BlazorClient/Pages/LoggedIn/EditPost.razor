@@ -1,0 +1,79 @@
+@page "/admin/edit-post/{postId}/{token}/{blogId}";
+@inject HttpClient Http;
+@inject IJSRuntime Js;
+@inject NavigationManager NavigationManager;
+@using BlazorClient.Models;
+
+<EditForm Model="@updated">
+    <button class="btn btn-primary" @onclick="GoHome">Home</button>
+    <div class="form-group">
+        <label for="inputName">Post's Name</label>
+        <input type="text" @bind="updated.PostName" class="form-control" id="inputName" placeholder="post.PostName">
+    </div>
+    <div class="form-group">
+        <label for="category">Insert category</label>
+        <input type="text" @bind="updated.Category" class="form-control" id="category" aria-describedby="emailHelp"
+            placeholder="@post.Category">
+    </div>
+    <div class="form-group">
+        <label for="inputUrl">Write the content of your post in HTML</label>
+        <textarea style="height:250px" @bind="updated.Content" class="form-control" id="inputUrl"
+            placeholder="post.Content"></textarea>
+    </div>
+    <button class="btn btn-primary" @onclick="SubmitUpdate">Submit</button>
+</EditForm>
+
+@code
+{
+    [Parameter]
+    public string Token { get; set; }
+    [Parameter]
+    public string BlogId { get; set; }
+    [Parameter]
+    public string PostId { get; set; }
+
+    private Post post;
+    private Post updated;
+
+    protected override async Task OnInitializedAsync()
+    {
+        post = await Http.GetFromJsonAsync<Post>($"https://blog-engine-api.herokuapp.com/api/post/get/{PostId}");
+        updated = post;
+    }
+
+    private async Task SubmitUpdate()
+    {
+        if (!PostIsFull(post))
+        {
+            var error = await Js.InvokeAsync<JsonContent>("alert",
+                $"All fields required. Please, write them out and try again.");
+            return;
+        }
+
+        var url = $"https://blog-engine-api.herokuapp.com/api/post/{Token}/{PostId}";
+        var posted = await Http.PutAsJsonAsync<Post>(url, updated);
+
+        if (posted == null)
+        {
+            var error = await Js.InvokeAsync<JsonContent>("alert",
+                $"Something went wrong. Please, try again.");
+            return;
+        }
+
+        var success = await Js.InvokeAsync<JsonContent>("alert",
+            $"Everything's fine!");
+    }
+
+    private void GoHome()
+    {
+        var route = $"/admin/blog/{BlogId}/{Token}";
+        NavigationManager.NavigateTo(route);
+    }
+
+    private bool PostIsFull(Post post)
+    {
+        return !(post == null || string.IsNullOrEmpty(post.PostName)
+            || string.IsNullOrEmpty(post.Content)
+            || string.IsNullOrEmpty(post.Category));
+    }
+}
