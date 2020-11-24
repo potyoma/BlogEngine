@@ -5,6 +5,6 @@ This is a school coursework.The project includes ASP.NET Core back-end and React
 You can find API documentation in [APIDOCS.md](https://github.com/potyoma/BlogEngine/blob/develop/APIDOCS.md). Webapi is available [here](https://blog-engine-api.herokuapp.com).
 
 # Web app (Blazor)
-Not all browsers are supported. For more information visit [this](https://webassembly.org/).
+Not all browsers are supported. For more information visit [this](https://webassembly.org/).</br>
 You can find working web app [here](https://blazor-blog-client.vercel.app/).
 There is a problem with routing. You can't navigate via URL to any page except main. Sorry, I'm working on it.
