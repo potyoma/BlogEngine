@@ -1,0 +1,24 @@
+@page "/post/{postId}";
+@inject HttpClient Http;
+@using BlazorClient.Models;
+
+<div class="container">
+    <h2 class="display-2">@post.PostName</h2>
+    <p class="lead">@post.Category</p>
+    @Content
+</div>
+
+@code
+{
+    [Parameter]
+    public string PostId { get; set; }
+
+    private Post post = new Post();
+    private MarkupString Content;
+
+    protected override async Task OnInitializedAsync()
+    {
+        post = await Http.GetFromJsonAsync<Post>($"https://blog-engine-api.herokuapp.com/api/post/get/{PostId}");
+        Content = new MarkupString(post.Content);
+    }
+}
