@@ -12,10 +12,12 @@ namespace BlogEngineApi.Controllers
     public class BlogsController : ControllerBase
     {
         private readonly BlogService _data;
+        private readonly IMailer _mailer;
 
-        public BlogsController(BlogService data)
+        public BlogsController(BlogService data, IMailer mailer)
         {
             _data = data;
+            _mailer = mailer;
         }
     
         [HttpGet]
@@ -43,6 +45,8 @@ namespace BlogEngineApi.Controllers
         public async Task<ActionResult<Blog>> Create(Blog blog)
         {
             var created = await _data.CreateAsync(blog);
+
+            await SendTokenTokenToEmailAsync(created);
 
             return created;
         }
@@ -77,6 +81,12 @@ namespace BlogEngineApi.Controllers
             await _data.RemoveAsync(blog.Token);
 
             return NoContent();
+        }
+
+        private async Task SendTokenTokenToEmailAsync(Blog blog)
+        {
+            var text = $"Here's your token: {blog.Token}. Be careful with it. It's the only way you can authorize your blog.";
+            await _mailer.SendEmailAsync(blog.Email, "BlogEngine Registration Success", text);
         }
     }
 }

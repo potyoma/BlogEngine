@@ -1,5 +1,6 @@
 using BlogEngineApi.Data;
 using BlogEngineApi.Models;
+using BlogEngineApi.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +34,9 @@ namespace BlogEngineApi
 
             services.AddSingleton<BlogService>();
             services.AddSingleton<PostService>();
+
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.AddSingleton<IMailer, Mailer>();
 
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.UseMemberCasing());

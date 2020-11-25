@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
         <label for="inputUrl">URL ID</label>
-        <input type="text" @bind="blog.BlogUrl" class="form-control" id="inputUrl" placeholder="Enter ID">
+        <input type="text" @bind="blog.BlogUrl" class="form-control" id="inputUrl" placeholder="Write the ID you want">
     </div>
     <div class="form-group">
         <label for="inputAuthor">Your Name</label>
@@ -40,17 +40,20 @@
 
     private async Task AddBlog()
     {
-        if (blog == null)
+        try
+        {
+            var response = await Http
+            .PostAsJsonAsync<Blog>("https://blog-engine-api.herokuapp.com/api/blogs", blog);
+
+            var created = await response.Content.ReadFromJsonAsync<Blog>();
+
+            var success = await Js.InvokeAsync<JsonContent>("alert", 
+                $"Registration was successfull! Here's your token: \n{created.Token}\nSave it and keep. It grants you access to your blog.");
+        }
+        catch (NullReferenceException ex)
         {
             Console.WriteLine("Blog is empty");
             return;
         }
-        var response = await Http
-         .PostAsJsonAsync<Blog>("https://blog-engine-api.herokuapp.com/api/blogs", blog);
-
-        var created = await response.Content.ReadFromJsonAsync<Blog>();
-
-        var success = await Js.InvokeAsync<JsonContent>("alert", 
-            $"Registration was successfull! Here's your token: \n{created.Token}\nSave it and keep. It grants you access to your blog.");
     }
 }
