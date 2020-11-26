@@ -25,9 +25,9 @@ namespace BlogEngineApi.Controllers
             await _data.GetAsync();
 
         [HttpGet("auth/{token}/{blogUrl}")]
-        public async Task<ActionResult<Blog>> Authorize(string token, string blogUrl)
+        public async Task<ActionResult<Blog>> Authorize(string token, string email)
         {
-            var auth = await Authorizer.Authorize(token, blogUrl, _data);
+            var auth = await Authorizer.Authorize(token, email, _data);
 
             if (auth)
             {

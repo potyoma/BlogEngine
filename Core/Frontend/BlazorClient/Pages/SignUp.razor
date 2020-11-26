@@ -20,7 +20,7 @@
     </div>
     <div class="form-group">
         <label for="inputAuthor">Your Name</label>
-        <input type="text" @bind="blog.Author" class="form-control" id="inputAuthor" placeholder="Enter Category">
+        <input type="text" @bind="blog.Author" class="form-control" id="inputAuthor" placeholder="Enter your name">
     </div>
     <div class="form-group">
         <label for="inputCategory">Category Name</label>
@@ -48,7 +48,7 @@
             var created = await response.Content.ReadFromJsonAsync<Blog>();
 
             var success = await Js.InvokeAsync<JsonContent>("alert", 
-                $"Registration was successfull! Here's your token: \n{created.Token}\nSave it and keep. It grants you access to your blog.");
+                $"Registration was successfull! The token was sent to your email. Please, check it.\nSave the token and keep it. It grants you access to your blog.");
         }
         catch (NullReferenceException ex)
         {

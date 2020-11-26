@@ -5,7 +5,7 @@ namespace BlogEngineApi.Utilities
 {
     public static class Authorizer
     {
-        public static async Task<bool> Authorize(string token, string blogUrl, BlogService blogs)
+        public static async Task<bool> Authorize(string token, string email, BlogService blogs)
         {
             var blog = await blogs.Get(token);
 
@@ -14,7 +14,7 @@ namespace BlogEngineApi.Utilities
                 return false;
             }
             
-            return blog.BlogUrl == blogUrl;
+            return blog.Email == email;
         }
     }
 }

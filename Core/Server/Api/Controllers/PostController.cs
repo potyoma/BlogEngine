@@ -36,12 +36,13 @@ namespace BlogEngineApi.Controllers
         public async Task<IActionResult> Delete(string token, string postId)
         {
             var post = await _data.GetPostAsync(postId);
-            if (post == null)
+            var blog = await _blogs.Get(token);
+            if (post == null || post.BlogUrl != blog.BlogUrl)
             {
                 return NotFound();
             }
 
-            var auth = await Authorizer.Authorize(token, post.BlogUrl, _blogs);
+            var auth = await Authorizer.Authorize(token, blog.Email, _blogs);
             if (!auth)
             {
                 return BadRequest();
@@ -58,12 +59,13 @@ namespace BlogEngineApi.Controllers
             [FromBody]Post postIn)
         {
             var post = await _data.GetPostAsync(postId);
-            if (post == null)
+            var blog = await _blogs.Get(token);
+            if (post == null || post.BlogUrl != blog.BlogUrl)
             {
                 return NotFound();
             }
 
-            var auth = await Authorizer.Authorize(token, post.BlogUrl, _blogs);
+            var auth = await Authorizer.Authorize(token, blog.Email, _blogs);
             if (!auth)
             {
                 return BadRequest();
@@ -78,7 +80,13 @@ namespace BlogEngineApi.Controllers
             string token, [FromBody]Post post)
         {   
             // Contains authorization condition.
-            var auth = await Authorizer.Authorize(token, post.BlogUrl, _blogs);
+            var blog = await _blogs.Get(token);
+            if (blog == null)
+            {
+                return NotFound();
+            }
+            
+            var auth = await Authorizer.Authorize(token, blog.Email, _blogs);
 
             if (!auth)
             {
