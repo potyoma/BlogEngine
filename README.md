@@ -6,5 +6,5 @@ You can find API documentation in [APIDOCS.md](https://github.com/potyoma/BlogEn
 
 # Web app (Blazor)
 Not all browsers are supported. For more information visit [this](https://webassembly.org/).</br>
-You can find working web app [here](https://blog-engine-client.vercel.app/).
-There is a problem with routing. :exclamation: You can't navigate via URL to any page except main. Sorry, I'm working on it. :exclamation:
+You can find working web app [here](https://blog-engine-client.vercel.app/).</br>
+:exclamation: There is a problem with routing. You can't navigate via URL to any page except main. Sorry, I'm working on it. :exclamation:
