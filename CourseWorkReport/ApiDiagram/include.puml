@@ -1,0 +1,139 @@
+@startuml
+class Program {
+    + {static} Main(args:string[]) : void
+    + {static} CreateHostBuilder(args:string[]) : IHostBuilder
+}
+class Startup {
+    + Startup(configuration:IConfiguration)
+    + ConfigureServices(services:IServiceCollection) : void
+    + Configure(app:IApplicationBuilder, env:IWebHostEnvironment) : void
+}
+Startup --> "StaticConfig" IConfiguration
+Startup --> "Configuration" IConfiguration
+class BlogsController {
+    + BlogsController(data:BlogService, mailer:IMailer)
+    + <<async>> Get() : Task<ActionResult<List<Blog>>>
+    + <<async>> Authorize(token:string, email:string) : Task<ActionResult<Blog>>
+    + <<async>> Get(id:string) : Task<Blog>
+    + <<async>> Create(blog:Blog) : Task<ActionResult<Blog>>
+    + <<async>> Update(token:string, blogin:Blog) : Task<IActionResult>
+    + <<async>> Delete(token:string) : Task<IActionResult>
+    - <<async>> SendTokenTokenToEmailAsync(blog:Blog) : Task
+}
+ControllerBase <|-- BlogsController
+BlogsController --> "_data" BlogService
+BlogsController --> "_mailer" IMailer
+class PostController {
+    + PostController(data:PostService, blogs:BlogService)
+    + <<async>> GetByBlogAsync(blogId:string) : Task<ActionResult<List<Post>>>
+    + <<async>> GetPost(postId:string) : Task<ActionResult<Post>>
+    + <<async>> Delete(token:string, postId:string) : Task<IActionResult>
+    + <<async>> Update(token:string, postId:string, postIn:Post) : Task<IActionResult>
+    + <<async>> CreatePost(token:string, post:Post) : Task<ActionResult<Post>>
+}
+ControllerBase <|-- PostController
+PostController --> "_data" PostService
+PostController --> "_blogs" BlogService
+class BlogService {
+    + BlogService(settings:IDatabaseSettings)
+    + <<async>> CreateAsync(blog:Blog) : Task<Blog>
+    + <<async>> GetAsync() : Task<List<Blog>>
+    + <<async>> Get(token:string) : Task<Blog>
+    + <<async>> GetBlogAsync(id:string) : Task<Blog>
+    + <<async>> RemoveAsync(token:string) : Task
+    + <<async>> UpdateAsync(token:string, blogin:Blog) : Task
+}
+class "IMongoCollection`1"<T> {
+}
+Service <|-- BlogService
+IBLogService <|-- BlogService
+BlogService --> "_blogs<Blog>" "IMongoCollection`1"
+interface IBLogService {
+    GetAsync() : Task<List<Blog>>
+    GetBlogAsync(id:string) : Task<Blog>
+    CreateAsync(blog:Blog) : Task<Blog>
+    UpdateAsync(token:string, blogin:Blog) : Task
+    RemoveAsync(token:string) : Task
+}
+interface IPostService {
+    GetAllByBlogAsync(blogId:string) : Task<List<Post>>
+    GetPostAsync(postId:string) : Task<Post>
+    Delete(postId:string) : Task
+    Update(postId:string, postIn:Post) : Task
+    Create(post:Post) : Task<Post>
+}
+class PostService {
+    + PostService(settings:IDatabaseSettings)
+    + <<async>> Create(post:Post) : Task<Post>
+    + <<async>> Delete(postId:string) : Task
+    + <<async>> GetAllByBlogAsync(id:string) : Task<List<Post>>
+    + <<async>> GetPostAsync(postId:string) : Task<Post>
+    + <<async>> Update(postId:string, postIn:Post) : Task
+}
+class "IMongoCollection`1"<T> {
+}
+Service <|-- PostService
+IPostService <|-- PostService
+PostService --> "_posts<Post>" "IMongoCollection`1"
+PostService --> "_blogs<Blog>" "IMongoCollection`1"
+class Service {
+    + Service(settings:IDatabaseSettings)
+}
+Service --> "Client" MongoClient
+Service --> "Database" IMongoDatabase
+class Blog {
+    + Id : string <<get>> <<set>>
+    + BlogName : string <<get>> <<set>>
+    + BlogUrl : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + Author : string <<get>> <<set>>
+    + Category : string <<get>> <<set>>
+    + Token : string <<get>> <<set>>
+}
+class DatabaseSettings {
+    + BlogsCollectionName : string <<get>> <<set>>
+    + PostsCollectionName : string <<get>> <<set>>
+    + ConnectionString : string <<get>> <<set>>
+    + DatabaseName : string <<get>> <<set>>
+}
+IDatabaseSettings <|-- DatabaseSettings
+interface IDatabaseSettings {
+    BlogsCollectionName : string <<get>> <<set>>
+    PostsCollectionName : string <<get>> <<set>>
+    ConnectionString : string <<get>> <<set>>
+    DatabaseName : string <<get>> <<set>>
+}
+class Post {
+    + Id : string <<get>> <<set>>
+    + PostName : string <<get>> <<set>>
+    + BlogUrl : string <<get>> <<set>>
+    + Category : string <<get>> <<set>>
+    + Content : string <<get>> <<set>>
+}
+class SmtpSettings {
+    + Server : string <<get>> <<set>>
+    + Port : int <<get>> <<set>>
+    + SenderName : string <<get>> <<set>>
+    + SenderEmail : string <<get>> <<set>>
+    + Username : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+}
+class Authorizer <<static>> {
+    + {static} <<async>> Authorize(token:string, email:string, blogs:BlogService) : Task<bool>
+}
+interface IMailer {
+    SendEmailAsync(email:string, subject:string, body:string) : Task
+}
+class Mailer {
+    + Mailer(smtpSettings:IOptions<SmtpSettings>, env:IWebHostEnvironment)
+    + <<async>> SendEmailAsync(email:string, subject:string, body:string) : Task
+}
+IMailer <|-- Mailer
+Mailer --> "_smtpSettings" SmtpSettings
+Mailer --> "_env" IWebHostEnvironment
+class Tokenizer <<static>> {
+    - <<const>> iterations : int = 2000
+    + {static} <<async>> Create(id:string, email:string) : Task<string>
+    - {static} <<async>> Encrypt(id:string, email:string) : Task<byte[]>
+}
+@enduml

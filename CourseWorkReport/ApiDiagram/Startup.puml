@@ -1,0 +1,9 @@
+@startuml
+class Startup {
+    + Startup(configuration:IConfiguration)
+    + ConfigureServices(services:IServiceCollection) : void
+    + Configure(app:IApplicationBuilder, env:IWebHostEnvironment) : void
+}
+Startup --> "StaticConfig" IConfiguration
+Startup --> "Configuration" IConfiguration
+@enduml

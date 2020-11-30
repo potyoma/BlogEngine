@@ -1,0 +1,7 @@
+@startuml
+class Tokenizer <<static>> {
+    - <<const>> iterations : int = 2000
+    + {static} <<async>> Create(id:string, email:string) : Task<string>
+    - {static} <<async>> Encrypt(id:string, email:string) : Task<byte[]>
+}
+@enduml

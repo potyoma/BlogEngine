@@ -1,0 +1,8 @@
+@startuml
+interface IDatabaseSettings {
+    BlogsCollectionName : string <<get>> <<set>>
+    PostsCollectionName : string <<get>> <<set>>
+    ConnectionString : string <<get>> <<set>>
+    DatabaseName : string <<get>> <<set>>
+}
+@enduml

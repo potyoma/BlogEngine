@@ -1,0 +1,5 @@
+@startuml
+class Authorizer <<static>> {
+    + {static} <<async>> Authorize(token:string, email:string, blogs:BlogService) : Task<bool>
+}
+@enduml

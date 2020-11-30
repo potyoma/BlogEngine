@@ -1,0 +1,9 @@
+@startuml
+class Post {
+    + Id : string <<get>> <<set>>
+    + PostName : string <<get>> <<set>>
+    + BlogUrl : string <<get>> <<set>>
+    + Category : string <<get>> <<set>>
+    + Content : string <<get>> <<set>>
+}
+@enduml

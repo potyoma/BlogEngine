@@ -1,0 +1,9 @@
+@startuml
+interface IPostService {
+    GetAllByBlogAsync(blogId:string) : Task<List<Post>>
+    GetPostAsync(postId:string) : Task<Post>
+    Delete(postId:string) : Task
+    Update(postId:string, postIn:Post) : Task
+    Create(post:Post) : Task<Post>
+}
+@enduml

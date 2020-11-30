@@ -1,0 +1,11 @@
+@startuml
+class Blog {
+    + Id : string <<get>> <<set>>
+    + BlogName : string <<get>> <<set>>
+    + BlogUrl : string <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + Author : string <<get>> <<set>>
+    + Category : string <<get>> <<set>>
+    + Token : string <<get>> <<set>>
+}
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class Service {
+    + Service(settings:IDatabaseSettings)
+}
+Service --> "Client" MongoClient
+Service --> "Database" IMongoDatabase
+@enduml

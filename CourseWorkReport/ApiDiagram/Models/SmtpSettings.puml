@@ -1,0 +1,10 @@
+@startuml
+class SmtpSettings {
+    + Server : string <<get>> <<set>>
+    + Port : int <<get>> <<set>>
+    + SenderName : string <<get>> <<set>>
+    + SenderEmail : string <<get>> <<set>>
+    + Username : string <<get>> <<set>>
+    + Password : string <<get>> <<set>>
+}
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class Mailer {
+    + Mailer(smtpSettings:IOptions<SmtpSettings>, env:IWebHostEnvironment)
+    + <<async>> SendEmailAsync(email:string, subject:string, body:string) : Task
+}
+IMailer <|-- Mailer
+Mailer --> "_smtpSettings" SmtpSettings
+Mailer --> "_env" IWebHostEnvironment
+@enduml

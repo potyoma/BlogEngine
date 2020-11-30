@@ -1,0 +1,9 @@
+@startuml
+interface IBLogService {
+    GetAsync() : Task<List<Blog>>
+    GetBlogAsync(id:string) : Task<Blog>
+    CreateAsync(blog:Blog) : Task<Blog>
+    UpdateAsync(token:string, blogin:Blog) : Task
+    RemoveAsync(token:string) : Task
+}
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+class PostController {
+    + PostController(data:PostService, blogs:BlogService)
+    + <<async>> GetByBlogAsync(blogId:string) : Task<ActionResult<List<Post>>>
+    + <<async>> GetPost(postId:string) : Task<ActionResult<Post>>
+    + <<async>> Delete(token:string, postId:string) : Task<IActionResult>
+    + <<async>> Update(token:string, postId:string, postIn:Post) : Task<IActionResult>
+    + <<async>> CreatePost(token:string, post:Post) : Task<ActionResult<Post>>
+}
+ControllerBase <|-- PostController
+PostController --> "_data" PostService
+PostController --> "_blogs" BlogService
+@enduml

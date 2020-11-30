@@ -1,0 +1,9 @@
+@startuml
+class DatabaseSettings {
+    + BlogsCollectionName : string <<get>> <<set>>
+    + PostsCollectionName : string <<get>> <<set>>
+    + ConnectionString : string <<get>> <<set>>
+    + DatabaseName : string <<get>> <<set>>
+}
+IDatabaseSettings <|-- DatabaseSettings
+@enduml

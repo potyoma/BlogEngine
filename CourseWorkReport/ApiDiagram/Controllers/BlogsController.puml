@@ -1,0 +1,15 @@
+@startuml
+class BlogsController {
+    + BlogsController(data:BlogService, mailer:IMailer)
+    + <<async>> Get() : Task<ActionResult<List<Blog>>>
+    + <<async>> Authorize(token:string, email:string) : Task<ActionResult<Blog>>
+    + <<async>> Get(id:string) : Task<Blog>
+    + <<async>> Create(blog:Blog) : Task<ActionResult<Blog>>
+    + <<async>> Update(token:string, blogin:Blog) : Task<IActionResult>
+    + <<async>> Delete(token:string) : Task<IActionResult>
+    - <<async>> SendTokenTokenToEmailAsync(blog:Blog) : Task
+}
+ControllerBase <|-- BlogsController
+BlogsController --> "_data" BlogService
+BlogsController --> "_mailer" IMailer
+@enduml

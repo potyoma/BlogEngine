@@ -1,0 +1,16 @@
+@startuml
+class BlogService {
+    + BlogService(settings:IDatabaseSettings)
+    + <<async>> CreateAsync(blog:Blog) : Task<Blog>
+    + <<async>> GetAsync() : Task<List<Blog>>
+    + <<async>> Get(token:string) : Task<Blog>
+    + <<async>> GetBlogAsync(id:string) : Task<Blog>
+    + <<async>> RemoveAsync(token:string) : Task
+    + <<async>> UpdateAsync(token:string, blogin:Blog) : Task
+}
+class "IMongoCollection`1"<T> {
+}
+Service <|-- BlogService
+IBLogService <|-- BlogService
+BlogService --> "_blogs<Blog>" "IMongoCollection`1"
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+class PostService {
+    + PostService(settings:IDatabaseSettings)
+    + <<async>> Create(post:Post) : Task<Post>
+    + <<async>> Delete(postId:string) : Task
+    + <<async>> GetAllByBlogAsync(id:string) : Task<List<Post>>
+    + <<async>> GetPostAsync(postId:string) : Task<Post>
+    + <<async>> Update(postId:string, postIn:Post) : Task
+}
+class "IMongoCollection`1"<T> {
+}
+Service <|-- PostService
+IPostService <|-- PostService
+PostService --> "_posts<Post>" "IMongoCollection`1"
+PostService --> "_blogs<Blog>" "IMongoCollection`1"
+@enduml
