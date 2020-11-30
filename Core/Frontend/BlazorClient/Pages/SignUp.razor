@@ -52,7 +52,7 @@
         }
         catch (NullReferenceException ex)
         {
-            Console.WriteLine("Blog is empty");
+            Console.WriteLine($"Blog is empty: {ex.Message}");
             return;
         }
     }
